@@ -6,6 +6,7 @@ var rightImage = document.getElementById('right-image');
 var midImage = document.getElementById('mid-image');
 var numClicks = 0;
 var numClickSpan = document.getElementById('number-complete');
+var picBox = document.getElementById('picture-box');
 var lastImages = [];
 
 function MallProduct(name, location, id) {
@@ -76,6 +77,7 @@ function showNewImages() {
     leftImage.removeEventListener('click', showNewImages);
     midImage.removeEventListener('click', showNewImages);
     rightImage.removeEventListener('click', showNewImages);
+    picBox.style.display = 'none';
   }
 }
 
@@ -93,10 +95,3 @@ function renderData() {
 leftImage.addEventListener('click', showNewImages);
 midImage.addEventListener('click', showNewImages);
 rightImage.addEventListener('click', showNewImages);
-
-if (numClicks === 25) {
-  renderData();
-  leftImage.removeEventListener('click', showNewImages);
-  midImage.removeEventListener('click', showNewImages);
-  rightImage.removeEventListener('click', showNewImages);
-}
