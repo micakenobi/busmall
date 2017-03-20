@@ -6,6 +6,7 @@ var rightImage = document.getElementById('right-image');
 var midImage = document.getElementById('mid-image');
 var numClicks = 0;
 var numClickSpan = document.getElementById('number-complete');
+var lastImages = [300, 300, 300];
 
 function MallProduct(name, location, id) {
   this.prodName = name;
@@ -36,3 +37,30 @@ var imgUnicorn = new MallProduct('Canned Unicorn Meat', 'images/unicorn.jpg', 'i
 var imgUsb = new MallProduct('Wriggling USB Tentacle', 'images/usb.gif', 'image-usb');
 var imgWatercan = new MallProduct('Useless Watering Can', 'images/water-can.jpg', 'image-watercan');
 var imgWine = new MallProduct('No-Spill Wine Glass', 'images/wine-glass.jpg', 'image-wine');
+
+function randProduct() {
+  return Math.floor(Math.random() * productList.length);
+}
+
+function showNewImages() {
+  event.preventDefault();
+  var clickedImg = event.target;
+  var newImages = [];
+  while (newImages.length < 3) {
+    var newImg = randProduct();
+    if (!lastImages.includes(newImg) && !newImages.includes(newImg)) {
+      newImages.push(newImg);
+    }
+  }
+  leftImage.src = productList[newImages[0]].filePath;
+  midImage.src = productList[newImages[1]].filePath;
+  rightImage.src = productList[newImages[2]].filePath;
+  numClicks++;
+  lastImages = newImages;
+}
+
+// while (numClicks < 25) {
+leftImage.addEventListener('click', showNewImages);
+midImage.addEventListener('click', showNewImages);
+rightImage.addEventListener('click', showNewImages);
+// }
