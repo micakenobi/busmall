@@ -41,14 +41,8 @@ function randProduct() {
   return Math.floor(Math.random() * productList.length);
 }
 
-function showNewImages() {
-  event.preventDefault();
-  var clickedImg = event.target;
-  console.log(clickedImg.className);
-  console.log(productList[clickedImg.className]);
+function drawImages() {
   var newImages = [];
-  productList[clickedImg.className].timesClicked++;
-  console.log(productList[clickedImg.className].prodName + ' ' + productList[clickedImg.className].timesClicked);
   while (newImages.length < 3) {
     var newImg = randProduct();
     if (!lastImages.includes(newImg) && !newImages.includes(newImg)) {
@@ -61,19 +55,48 @@ function showNewImages() {
   midImage.className = newImages[1];
   rightImage.src = productList[newImages[2]].filePath;
   rightImage.className = newImages[2];
+  lastImages = newImages;
+}
+drawImages();
+
+function showNewImages() {
+  event.preventDefault();
+  var clickedImg = event.target;
+  productList[clickedImg.className].timesClicked++;
+  drawImages();
   numClicks++;
   numClickSpan.innerText = numClicks;
   if (numClicks < 25) {
-    productList[newImages[0]].timesShown++;
-    console.log(productList[newImages[0]].prodName + ' ' + productList[newImages[0]].timesShown);
-    productList[newImages[1]].timesShown++;
-    console.log(productList[newImages[1]].prodName + ' ' + productList[newImages[1]].timesShown);
-    productList[newImages[2]].timesShown++;
-    console.log(productList[newImages[2]].prodName + ' ' + productList[newImages[2]].timesShown);
+    productList[leftImage.className].timesShown++;
+    productList[midImage.className].timesShown++;
+    productList[rightImage.className].timesShown++;
   }
-  lastImages = newImages;
+  else if (numClicks === 25) {
+    renderData();
+    leftImage.removeEventListener('click', showNewImages);
+    midImage.removeEventListener('click', showNewImages);
+    rightImage.removeEventListener('click', showNewImages);
+  }
+}
+
+function renderData() {
+  var dataList = document.getElementById('data-list');
+  var newUL = document.createElement('ul');
+  for (var i = 0; i < productList.length; i++) {
+    var newLI = document.createElement('li');
+    newLI.innerText = productList[i].timesClicked + ' votes for ' + productList[i].prodName + ' (Total times shown: ' + productList[i].timesShown + ')';
+    newUL.appendChild(newLI);
+  }
+  dataList.appendChild(newUL);
 }
 
 leftImage.addEventListener('click', showNewImages);
 midImage.addEventListener('click', showNewImages);
 rightImage.addEventListener('click', showNewImages);
+
+if (numClicks === 25) {
+  renderData();
+  leftImage.removeEventListener('click', showNewImages);
+  midImage.removeEventListener('click', showNewImages);
+  rightImage.removeEventListener('click', showNewImages);
+}
