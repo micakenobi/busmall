@@ -64,15 +64,13 @@ function showNewImages() {
   event.preventDefault();
   var clickedImg = event.target;
   productList[clickedImg.className].timesClicked++;
+  productList[leftImage.className].timesShown++;
+  productList[midImage.className].timesShown++;
+  productList[rightImage.className].timesShown++;
   drawImages();
   numClicks++;
   numClickSpan.innerText = numClicks;
-  if (numClicks < 25) {
-    productList[leftImage.className].timesShown++;
-    productList[midImage.className].timesShown++;
-    productList[rightImage.className].timesShown++;
-  }
-  else if (numClicks === 25) {
+  if (numClicks === 25) {
     renderData();
     leftImage.removeEventListener('click', showNewImages);
     midImage.removeEventListener('click', showNewImages);
