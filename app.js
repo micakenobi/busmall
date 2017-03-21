@@ -14,6 +14,7 @@ function MallProduct(name, location) {
   this.filePath = location;
   this.timesClicked = 0;
   this.timesShown = 0;
+  this.percent = 0;
   productList.push(this);
 }
 
@@ -89,11 +90,13 @@ function renderData() {
   var nameArray = [];
   var clickArray = [];
   for (var i = 0; i < productList.length; i++) {
-    nameArray.push(productList[i].prodName);
-    clickArray.push(clickPercentage(productList[i].timesClicked, productList[i].timesShown));
+    productList[i].percent = clickPercentage(productList[i].timesClicked, productList[i].timesShown);
   }
-  console.log(nameArray);
-  console.log(clickArray);
+  var newList = productList.sort(function (a,b) {return b.percent - a.percent;});
+  for (var a = 0; a < 5; a++) {
+    nameArray.push(newList[a].prodName);
+    clickArray.push(newList[a].percent);
+  }
   var chartData = {
     labels: nameArray,
     datasets: [{
