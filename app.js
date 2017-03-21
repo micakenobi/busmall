@@ -79,26 +79,55 @@ function showNewImages() {
   }
 }
 
+function clickPercentage(num1, num2) {
+  return num1 / num2 * 100;
+}
+
 function renderData() {
-  var canvas = document.getElementById('product-chart').getContext('2d');
+  var canvas = document.getElementById('product-chart');
+  var context = canvas.getContext('2d');
   var nameArray = [];
   var clickArray = [];
-  var shownArray = [];
   for (var i = 0; i < productList.length; i++) {
     nameArray.push(productList[i].prodName);
-    clickArray.push(productList[i].timesClicked);
-    shownArray.push(productList[i].timesShown);
+    clickArray.push(clickPercentage(productList[i].timesClicked, productList[i].timesShown));
   }
   var chartData = {
     labels: nameArray,
     datasets: [{
-      label: 'Times Selected',
-      backgroundColor: rgba(255,0,0,0.2),
-      borderColor: rgba(255,0,0,1),
+      backgroundColor: 'rgba(255,0,0,0.2)',
+      borderColor: 'rgba(255,0,0,1)',
       data: clickArray
     }]
   };
-  new Chart(canvas).Bar(chartData);
+  var chartOptions = {
+    scales: {
+      xAxes: [{
+        display: true,
+        ticks: {
+          stepValue: 1
+        }
+      }],
+      yAxes: [{
+        display: true,
+        ticks: {
+          beginAtZero: true,
+          steps: 10,
+          max: 100
+        }
+      }]
+    },
+    title: {
+      display: true,
+      text: 'Percentage of Times Each Product Was Clicked When Displayed'
+    }
+  };
+  var chartInfo = {
+    type: 'bar',
+    data: chartData,
+    options: chartOptions
+  };
+  var productChart = new Chart(context, chartInfo);
   document.getElementById('product-chart').style.display = 'block';
 }
 
