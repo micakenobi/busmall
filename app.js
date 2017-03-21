@@ -9,7 +9,7 @@ var numClickSpan = document.getElementById('number-complete');
 var picBox = document.getElementById('picture-box');
 var lastImages = [];
 
-function MallProduct(name, location, id) {
+function MallProduct(name, location) {
   this.prodName = name;
   this.filePath = location;
   this.timesClicked = 0;
