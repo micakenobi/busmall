@@ -92,9 +92,12 @@ function renderData() {
     nameArray.push(productList[i].prodName);
     clickArray.push(clickPercentage(productList[i].timesClicked, productList[i].timesShown));
   }
+  console.log(nameArray);
+  console.log(clickArray);
   var chartData = {
     labels: nameArray,
     datasets: [{
+      label: 'Products',
       backgroundColor: 'rgba(255,0,0,0.2)',
       borderColor: 'rgba(255,0,0,1)',
       data: clickArray
@@ -105,7 +108,9 @@ function renderData() {
       xAxes: [{
         display: true,
         ticks: {
-          stepValue: 1
+          min: 1,
+          max: 1,
+          stepSize: 1
         }
       }],
       yAxes: [{
@@ -127,7 +132,7 @@ function renderData() {
     data: chartData,
     options: chartOptions
   };
-  var productChart = new Chart(context, chartInfo);
+  new Chart(context, chartInfo);
   document.getElementById('product-chart').style.display = 'block';
 }
 
