@@ -90,12 +90,16 @@ function renderData() {
     shownArray.push(productList[i].timesShown);
   }
   var chartData = {
-    labels: ['bunch', 'of', 'labels'],
+    labels: nameArray,
     datasets: [{
-      data: [1, 2, 3]
+      label: 'Times Selected',
+      backgroundColor: rgba(255,0,0,0.2),
+      borderColor: rgba(255,0,0,1),
+      data: clickArray
     }]
   };
   new Chart(canvas).Bar(chartData);
+  document.getElementById('product-chart').style.display = 'block';
 }
 
 leftImage.addEventListener('click', showNewImages);
