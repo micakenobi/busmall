@@ -127,7 +127,7 @@ function renderData() {
     },
     title: {
       display: true,
-      text: 'Percentage of Times Each Product Was Clicked When Displayed'
+      text: 'Most Clicked Products by Percentage of Selections'
     }
   };
   var chartInfo = {
