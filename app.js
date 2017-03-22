@@ -38,6 +38,14 @@ var imgUnicorn = new MallProduct('Canned Unicorn Meat', 'images/unicorn.jpg');
 var imgUsb = new MallProduct('Wriggling USB Tentacle', 'images/usb.gif');
 var imgWatercan = new MallProduct('Useless Watering Can', 'images/water-can.jpg');
 var imgWine = new MallProduct('No-Spill Wine Glass', 'images/wine-glass.jpg');
+if (localStorage.storedArray) {
+  var parsedArray = JSON.parse(localStorage.storedArray);
+  for (var i = 0; i < parsedArray.length; i++) {
+    productList[i].timesClicked += parsedArray[i].timesClicked;
+    productList[i].timesShown += parsedArray[i].timesShown;
+    productList[i].percent += parsedArray[i].percent;
+  }
+}
 
 function randProduct() {
   return Math.floor(Math.random() * productList.length);
@@ -72,6 +80,7 @@ function showNewImages() {
   numClicks++;
   numClickSpan.innerText = numClicks;
   if (numClicks === 25) {
+    localStorage.storedArray = JSON.stringify(productList);
     renderData();
     leftImage.removeEventListener('click', showNewImages);
     midImage.removeEventListener('click', showNewImages);
