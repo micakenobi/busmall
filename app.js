@@ -14,6 +14,7 @@ function MallProduct(name, location) {
   this.filePath = location;
   this.timesClicked = 0;
   this.timesShown = 0;
+  this.percent = 0;
   productList.push(this);
 }
 
@@ -79,15 +80,63 @@ function showNewImages() {
   }
 }
 
+function clickPercentage(num1, num2) {
+  return num1 / num2 * 100;
+}
+
 function renderData() {
-  var dataList = document.getElementById('data-list');
-  var newUL = document.createElement('ul');
+  var canvas = document.getElementById('product-chart');
+  var context = canvas.getContext('2d');
+  var nameArray = [];
+  var clickArray = [];
   for (var i = 0; i < productList.length; i++) {
-    var newLI = document.createElement('li');
-    newLI.innerText = productList[i].timesClicked + ' votes for ' + productList[i].prodName + ' (Total times shown: ' + productList[i].timesShown + ')';
-    newUL.appendChild(newLI);
+    productList[i].percent = clickPercentage(productList[i].timesClicked, productList[i].timesShown);
   }
-  dataList.appendChild(newUL);
+  var newList = productList.sort(function (a,b) {return b.percent - a.percent;});
+  for (var a = 0; a < 5; a++) {
+    nameArray.push(newList[a].prodName);
+    clickArray.push(newList[a].percent);
+  }
+  var chartData = {
+    labels: nameArray,
+    datasets: [{
+      label: 'Products',
+      backgroundColor: 'rgba(255,0,0,0.2)',
+      borderColor: 'rgba(255,0,0,1)',
+      data: clickArray
+    }]
+  };
+  var chartOptions = {
+    scales: {
+      xAxes: [{
+        display: true,
+        ticks: {
+          min: 1,
+          max: 1,
+          stepSize: 1
+        }
+      }],
+      yAxes: [{
+        display: true,
+        ticks: {
+          beginAtZero: true,
+          steps: 10,
+          max: 100
+        }
+      }]
+    },
+    title: {
+      display: true,
+      text: 'Most Clicked Products by Percentage of Selections'
+    }
+  };
+  var chartInfo = {
+    type: 'bar',
+    data: chartData,
+    options: chartOptions
+  };
+  new Chart(context, chartInfo);
+  document.getElementById('product-chart').style.display = 'block';
 }
 
 leftImage.addEventListener('click', showNewImages);
